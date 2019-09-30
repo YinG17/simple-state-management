@@ -17,6 +17,7 @@ export class AppComponent {
   profileList: Observable<Profile[]>;
 
   submit = false;
+  idOnEdit = 0;
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(5)]]

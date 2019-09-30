@@ -1,3 +1,5 @@
-<p>
-  edit-profile works!
-</p>
+<form [formGroup]="form" (ngSubmit)="editProfile()">
+
+  <input name="name" formControlName="name" type="text">
+
+</form>
