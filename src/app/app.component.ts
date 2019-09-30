@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Profile } from './models/profile.model';
+import { Profile } from './state/profile.model';
 import { ProfileState } from './state/profile.state';
 import { Observable, pipe } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { GetProfileList, AddProfile, DeleteProfile } from './actions/profile.actions';
+import { GetProfileList, AddProfile, DeleteProfile } from './state/profile.actions';
 
 @Component({
   selector: 'app-root',

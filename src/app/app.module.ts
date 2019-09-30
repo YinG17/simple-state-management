@@ -8,10 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from './state/profile.state';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

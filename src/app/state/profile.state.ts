@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Profile } from '../models/profile.model';
+import { Profile } from './profile.model';
 
-import { AddProfile, DeleteProfile, EditProfile } from '../actions/profile.actions';
+import { AddProfile, DeleteProfile, EditProfile } from './profile.actions';
 
 export class ProfileStateModel {
   profiles: Profile[];

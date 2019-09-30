@@ -1,4 +1,4 @@
-import { Profile } from '../models/profile.model';
+import { Profile } from './profile.model';
 
 
 export class GetProfileList {
