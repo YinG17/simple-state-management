@@ -29,8 +29,4 @@ import { environment } from 'src/environments/environment.prod';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor() {
-    console.log(environment.production);
-  }
-}
+export class AppModule {}
