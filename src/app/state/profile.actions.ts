@@ -34,6 +34,11 @@ export class AddProfile {
 /**
  * `EditProfile`
  */
+export class SetProfileOnEdit {
+  static readonly type = '[Profile] Edit';
+  constructor(public id: number) { }
+}
+
 export class EditProfile {
   static readonly type = '[Profile] Edit';
   constructor(public profile: Profile) { }

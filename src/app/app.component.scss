@@ -4,8 +4,11 @@
 
 .container {
   display: flex;
+  height: 100vh;
 
   .raw-data, .profile-management, .search {
-    padding: 3em;
+    min-width: 25%;
+    border-left: 1px solid gray;
+    padding: 3em 1em;
   }
 }
