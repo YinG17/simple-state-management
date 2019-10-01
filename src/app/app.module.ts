@@ -9,11 +9,13 @@ import { AppComponent } from './app.component';
 import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from './state/profile.state';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { SearchProfileComponent } from './components/search-profile/search-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    SearchProfileComponent
   ],
   imports: [
     BrowserModule,

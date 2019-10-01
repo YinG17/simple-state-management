@@ -1,3 +1,11 @@
 .red {
   background-color: rgb(196, 5, 5);
 }
+
+.container {
+  display: flex;
+
+  .raw-data {
+    padding: 3em;
+  }
+}

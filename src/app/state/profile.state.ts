@@ -1,11 +1,17 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Profile } from './profile.model';
-import { AddProfile, DeleteProfile, EditProfile } from './profile.actions';
+import { AddProfile, DeleteProfile, EditProfile, SearchProfile } from './profile.actions';
 
 export class ProfileStateModel {
   profiles: Profile[];
 }
 
+/**
+ * default profile
+ */
+const defaultProfile: Profile = {
+  id: 1, name: 'Default Profile'
+};
 
 /**
  * state pretty much hold everything
@@ -19,9 +25,11 @@ export class ProfileStateModel {
 @State<ProfileStateModel>({
   name: 'profiles',
   defaults: {
-    profiles: [
-      { id: 1, name: 'Default Profile' }
-    ]
+    /**
+     * we can define a `default` state value. or we can leave it as an empty array.
+     */
+    profiles: [defaultProfile]
+    // profiles: []
   }
 })
 export class ProfileState {
@@ -29,13 +37,15 @@ export class ProfileState {
   }
 
   /**
-   *
    * @param state the whole `profile` state
-   *
    */
   @Selector()
   static getProfileList(state: ProfileStateModel) {
     return state.profiles;
+  }
+
+  @Selector()
+  static searchProfile(state: ProfileStateModel) {
   }
 
   /**
@@ -57,7 +67,7 @@ export class ProfileState {
     /**
      * the `payload` which will be passed on from `this.store.dispatch(new AddProfile(newProfile))`
      */
-    { profile }: AddProfile 
+    { profile }: AddProfile
   ) {
     /**
      * get current state from the `ProfileState`.
@@ -85,19 +95,9 @@ export class ProfileState {
     });
   }
 
-  @Action(DeleteProfile)
-  deleteProfile(
-    { getState, patchState }: StateContext<ProfileStateModel>,
-    { id }: DeleteProfile
-  ) {
-    // console.log('ID to delete: ', id);
-
-    const state = getState();
-    patchState({
-      profiles: state.profiles.filter(profile => profile.id !== id)
-    });
-  }
-
+  /**
+   * `Edit Profile`
+   */
   @Action(EditProfile)
   editProfile(
     { getState, patchState }: StateContext<ProfileStateModel>,
@@ -111,4 +111,20 @@ export class ProfileState {
       profiles: profileList
     });
   }
+
+
+  @Action(DeleteProfile)
+  deleteProfile(
+    { getState, patchState }: StateContext<ProfileStateModel>,
+    { id }: DeleteProfile
+  ) {
+    // console.log('ID to delete: ', id);
+
+    const state = getState();
+    patchState({
+      profiles: state.profiles.filter(profile => profile.id !== id)
+    });
+  }
+
+
 }

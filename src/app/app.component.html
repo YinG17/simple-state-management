@@ -1,29 +1,49 @@
 <html>
 
-<div>
+<div class="container">
+  <section class="profile-management">
+    <b>Form valid: {{ form.valid }} </b>
 
-  <small class="red" *ngIf=" reqErr && touched"> please input name </small>
-  <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
-  <form [formGroup]="form" (ngSubmit)=" addProfile() ">
-    <input name="name" formControlName="name" />
-  </form>
-</div>
+    <div>
+      <small class="red" *ngIf=" reqErr && touched && !submit "> please input name </small>
+      <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
+      <form [formGroup]="form" (ngSubmit)=" addProfile() ">
+        <input name="name" formControlName="name" />
+      </form>
+    </div>
 
-<!-- profile list -->
-<div style="margin-top: 1em;" *ngFor=" let profile of profileList | async ">
+    <!-- profile list -->
+    <div style="margin-top: 1em;" *ngFor=" let profile of profileList | async ">
 
-  <h2> ID: {{ profile?.id }} <br>
-    <span *ngIf=" idOnEdit !== profile.id ">
-      Name: {{ profile?.name }}
-    </span>
-    <app-edit-profile [profile]="profile" (result)="idOnEdit = 0" *ngIf=" idOnEdit == profile.id "></app-edit-profile>
-  </h2>
-  <div>
+      <h2> ID: {{ profile?.id }} <br>
+        <span *ngIf=" idOnEdit !== profile.id ">
+          Name: {{ profile?.name }}
+        </span>
+        <app-edit-profile [profile]="profile" (result)="idOnEdit = 0" *ngIf=" idOnEdit == profile.id ">
+        </app-edit-profile>
+      </h2>
+      <div>
 
-    <button (click)=" idOnEdit = profile.id " *ngIf=" idOnEdit != profile.id "> Edit </button>
-    <button (click)=" idOnEdit = 0 " *ngIf=" idOnEdit == profile.id "> Cancel </button>
-    <button style="margin-left: .5em;" class="red" (click)="deleteProfile(profile.id)"> Delete Profile </button>
-  </div>
+        <button (click)=" idOnEdit = profile.id " *ngIf=" idOnEdit != profile.id "> Edit </button>
+        <button (click)=" idOnEdit = 0 " *ngIf=" idOnEdit == profile.id "> Cancel </button>
+        <button style="margin-left: .5em;" class="red" (click)="deleteProfile(profile.id)"> Delete Profile </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="raw-data">
+    <b>Current Profile List State</b>
+
+    <div style="margin-top: 1em;" *ngFor=" let profile of profileList | async">
+      {{ profile | json }}
+    </div>
+  </section>
+
+
+  <section>
+    <h2>Search</h2>
+    <app-search-profile></app-search-profile>
+  </section>
 </div>
 
 </html>

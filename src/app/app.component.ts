@@ -16,6 +16,7 @@ import { withLatestFrom } from 'rxjs/operators';
 export class AppComponent {
 
   idOnEdit = 0;
+  submit = false;
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(5)]]
@@ -34,9 +35,11 @@ export class AppComponent {
 
   addProfile() {
     if ( this.form.invalid ) {
-      alert('name must be 5 characters and above');
+      alert('invalid name!');
       return;
     }
+
+    this.submit = true;
 
     /**
      * dispatching a certain predefined action from the store.
@@ -62,7 +65,7 @@ export class AppComponent {
         console.log('latest', latest);
         alert('profile added!');
         this.form.patchValue({name: ''});
-        this.form.get('name').setErrors(null);
+        this.submit = false;
       });
   }
 

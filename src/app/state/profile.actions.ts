@@ -25,6 +25,12 @@ export class EditProfile {
   constructor(public profile: Profile) { }
 }
 
+
+export class SearchProfile {
+  static readonly type = '[Profile] Delete';
+  constructor(public search: string) { }
+}
+
 export class DeleteProfile {
   static readonly type = '[Profile] Delete';
   constructor(public id: number) { }
