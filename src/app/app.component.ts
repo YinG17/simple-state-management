@@ -54,9 +54,9 @@ export class AppComponent {
        *
        * for example if we have a `profiles` and `posts` state in our store
        * we can get the `latest` data collection of the `posts` state just by referencing it with `withLatestFrom(posts)`
-       * 
+       *
        * the return value we will recieve then is the `profiles` state along with the latest data collection from `posts` state.
-       * 
+       *
        * @example
        * - this.store.dispatch(new AddProfile(newProfile))
        *      .pipe(withLatestFrom(postList))

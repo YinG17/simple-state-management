@@ -55,7 +55,7 @@ export class ProfileState {
 
   /**
    * `Search Profile Selector`
-   * 
+   *
    * @returns a list of profile according from the current `state.searchText` value.
    */
   @Selector()
@@ -138,7 +138,7 @@ export class ProfileState {
 
   /**
    * `Search Profile Action`
-   * 
+   *
    * this will patch the `searchString` property of the `ProfileStateModel`.
    */
   @Action(SearchProfile)
