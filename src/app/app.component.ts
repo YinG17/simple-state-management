@@ -4,7 +4,8 @@ import { Profile } from './state/profile.model';
 import { ProfileState } from './state/profile.state';
 import { Observable, pipe } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { GetProfileList, AddProfile, DeleteProfile } from './state/profile.actions';
+import { AddProfile, DeleteProfile } from './state/profile.actions';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,20 +14,22 @@ import { GetProfileList, AddProfile, DeleteProfile } from './state/profile.actio
 })
 
 export class AppComponent {
-  @Select(ProfileState.getProfileList)
-  profileList: Observable<Profile[]>;
 
-  submit = false;
   idOnEdit = 0;
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(5)]]
   });
 
-  profiles: Profile[];
+  /**
+   * Select a certain slice from the Store.
+   *
+   * this can be referenced if we would like to get the state even without invoking a function from it.
+   */
+  @Select(ProfileState.getProfileList)
+  profileList: Observable<Profile[]>;
 
   constructor(private fb: FormBuilder, private store: Store) {
-    this.store.dispatch(new GetProfileList()).subscribe();
   }
 
   addProfile() {
@@ -34,29 +37,57 @@ export class AppComponent {
       alert('name must be 5 characters and above');
       return;
     }
-    this.submit = true;
-    this.store.dispatch(new AddProfile(this.form.value)).subscribe(
-      () => {
+
+    /**
+     * dispatching a certain predefined action from the store.
+     */
+    this.store.dispatch(new AddProfile(this.form.value)).pipe(
+      /**
+       * this will get the latest state of a store slice.
+       *
+       * for example if we have a `profiles` and `posts` state in our store
+       * we can get the `latest` data collection of the `posts` state just by referencing it with `withLatestFrom(posts)`
+       * 
+       * the return value we will recieve then is the `profiles` state along with the latest data collection from `posts` state.
+       * 
+       * @example
+       * - this.store.dispatch(new AddProfile(newProfile))
+       *      .pipe(withLatestFrom(postList))
+       *     .subscribe(([profileList, postList]));
+       */
+      withLatestFrom(this.profileList)
+    ).subscribe(
+      ([profiles, latest]) => {
+        console.log('profiles', profiles);
+        console.log('latest', latest);
         alert('profile added!');
         this.form.patchValue({name: ''});
-        this.submit = false;
+        this.form.get('name').setErrors(null);
       });
   }
 
 
   deleteProfile(id: number) {
-    // console.log('delete profile with id: ', id);
     this.store.dispatch(new DeleteProfile(id)).subscribe(() => {
+        /**
+         * since the state handle the management of itself, we only need to wait for it's completion.
+         */
       alert('profile deleted!');
     });
   }
 
+  /**
+   * non state things, ignore ....
+   */
   get minErr() {
     return this.form.get('name').hasError('minlength');
   }
 
-
   get reqErr() {
     return this.form.get('name').hasError('required');
+  }
+
+  get touched() {
+    return this.form.get('name').touched;
   }
 }

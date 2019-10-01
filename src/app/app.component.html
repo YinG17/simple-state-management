@@ -1,24 +1,23 @@
 <html>
 
 <div>
+
+  <small class="red" *ngIf=" reqErr && touched"> please input name </small>
+  <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
   <form [formGroup]="form" (ngSubmit)=" addProfile() ">
-    <input style="margin-right: .5em; height: 2em;" name="name" formControlName="name" />
-    <small class="red" *ngIf=" reqErr "> please input name </small>
-    <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small>
+    <input name="name" formControlName="name" />
   </form>
 </div>
 
+<!-- profile list -->
 <div style="margin-top: 1em;" *ngFor=" let profile of profileList | async ">
 
-
-  <div> ID: {{ profile?.id }} <br>
+  <h2> ID: {{ profile?.id }} <br>
     <span *ngIf=" idOnEdit !== profile.id ">
       Name: {{ profile?.name }}
     </span>
-  </div>
-
-  <app-edit-profile [profile]="profile" (result)="idOnEdit = 0" *ngIf=" idOnEdit == profile.id "></app-edit-profile>
-
+    <app-edit-profile [profile]="profile" (result)="idOnEdit = 0" *ngIf=" idOnEdit == profile.id "></app-edit-profile>
+  </h2>
   <div>
 
     <button (click)=" idOnEdit = profile.id " *ngIf=" idOnEdit != profile.id "> Edit </button>
