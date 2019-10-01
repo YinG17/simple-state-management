@@ -33,9 +33,13 @@
   </section>
 
   <section class="raw-data">
-    <b>Current Profile List State</b>
+    <b> Current Profile State </b> <br>
+    <div style="margin-top: .5em; margin-bottom: 1em;">
+      {{ currentState | async | json }}
+    </div>
 
-    <div style="margin-top: 1em;" *ngFor=" let profile of profileList | async">
+    <b >Current Profile List State</b>
+    <div style="margin-top: .5em;" *ngFor=" let profile of profileList | async">
       {{ profile | json }}
     </div>
   </section>

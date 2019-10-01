@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Profile } from './state/profile.model';
-import { ProfileState } from './state/profile.state';
+import { ProfileState, ProfileStateModel } from './state/profile.state';
 import { Observable, pipe } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { AddProfile, DeleteProfile } from './state/profile.actions';
@@ -21,6 +21,10 @@ export class AppComponent {
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(5)]]
   });
+
+
+  @Select(ProfileState.getState)
+  currentState: Observable<ProfileStateModel>;
 
   /**
    * Select a certain slice from the Store.

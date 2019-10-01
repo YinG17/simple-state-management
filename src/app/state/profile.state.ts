@@ -4,6 +4,7 @@ import { AddProfile, DeleteProfile, EditProfile, SearchProfile } from './profile
 
 export class ProfileStateModel {
   profiles: Profile[];
+  latestProfileID: number;
   searchText: string;
 }
 
@@ -22,15 +23,14 @@ const defaultProfile: Profile = {
  * - Each state is a collection of data relevant to each other having the same interface.
  * - This `state` holds a collection of data which in this case is a collection of profile.
  *
+ * - we can define a `default` state value. or we can leave it as an empty array.
  */
 @State<ProfileStateModel>({
   name: 'profiles',
   defaults: {
-    /**
-     * we can define a `default` state value. or we can leave it as an empty array.
-     */
     // profiles: []
     profiles: [defaultProfile],
+    latestProfileID: 0,
     searchText: ''
   }
 })
@@ -38,8 +38,15 @@ export class ProfileState {
   constructor() {
   }
 
+  @Selector()
+  static getState(state: ProfileStateModel) {
+    return state;
+  }
+
   /**
-   * @param state the whole `profile` state
+   * `Profile List Selector`
+   *
+   * @returns the `profile list` from the state.
    */
   @Selector()
   static getProfileList(state: ProfileStateModel) {
@@ -49,12 +56,12 @@ export class ProfileState {
   /**
    * `Search Profile Selector`
    * 
-   * @returns a list of profile according from the current `state.searchText` value
+   * @returns a list of profile according from the current `state.searchText` value.
    */
   @Selector()
   static searchProfile(state: ProfileStateModel) {
-    if ( state.searchText ) {
-      return state.profiles.filter(p => (p.name.indexOf(state.searchText) !== -1) || p.id.toString() === state.searchText);
+    if (state.searchText) {
+      return state.profiles.filter(p => p.name.indexOf(state.searchText) !== -1 || p.id.toString() === state.searchText);
     }
     return [];
   }
@@ -81,7 +88,7 @@ export class ProfileState {
     { profile }: AddProfile
   ) {
     /**
-     * get current state from the `ProfileState`.
+     * get current state of the `ProfileState`.
      */
     const state = getState();
 
@@ -91,10 +98,14 @@ export class ProfileState {
      * this is adding a new profile, which automatically increments the id to the highest profile id value from the list + 1.
      */
     let currId = 0;
-    if (!state.profiles.length) {
-      currId = 1;
+    if (state.latestProfileID) {
+      currId = state.latestProfileID + 1;
     } else {
-      currId = state.profiles[state.profiles.length - 1].id + 1;
+      if (!state.profiles.length) {
+        currId = 1;
+      } else {
+        currId = state.profiles[state.profiles.length - 1].id + 1;
+      }
     }
     profile.id = currId;
 
@@ -102,7 +113,8 @@ export class ProfileState {
      * patching profile state with the current `profileState` and the new one added.
      */
     patchState({
-      profiles: [...state.profiles, profile]
+      profiles: [...state.profiles, profile],
+      latestProfileID: currId
     });
   }
 
@@ -137,16 +149,23 @@ export class ProfileState {
     patchState({ searchText: search });
   }
 
+  /**
+   * `Delete Profile Action`
+   *
+   */
   @Action(DeleteProfile)
   deleteProfile(
     { getState, patchState }: StateContext<ProfileStateModel>,
     { id }: DeleteProfile
   ) {
     // console.log('ID to delete: ', id);
-
     const state = getState();
+
+    const profileList = [...state.profiles];
+    profileList.splice(profileList.findIndex(p => p.id === id), 1);
+
     patchState({
-      profiles: state.profiles.filter(profile => profile.id !== id)
+      profiles: profileList
     });
   }
 
