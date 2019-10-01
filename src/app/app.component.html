@@ -1,15 +1,14 @@
 <html>
 
 <div>
-  {{ minErr }}
   <form [formGroup]="form" (ngSubmit)=" addProfile() ">
-    <input name="name" formControlName="name" /> <br>
+    <input style="margin-right: .5em; height: 2em;" name="name" formControlName="name" />
     <small class="red" *ngIf=" reqErr "> please input name </small>
     <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small>
   </form>
 </div>
 
-<div *ngFor=" let profile of profileList | async ">
+<div style="margin-top: 1em;" *ngFor=" let profile of profileList | async ">
 
 
   <div> ID: {{ profile?.id }} <br>
@@ -18,7 +17,7 @@
     </span>
   </div>
 
-  <app-edit-profile [profile]="profile" *ngIf=" idOnEdit == profile.id "></app-edit-profile>
+  <app-edit-profile [profile]="profile" (result)="idOnEdit = 0" *ngIf=" idOnEdit == profile.id "></app-edit-profile>
 
   <div>
 

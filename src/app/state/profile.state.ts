@@ -17,7 +17,6 @@ export class ProfileStateModel {
 })
 export class ProfileState {
   constructor() {
-    window['profileState'] = this;
   }
 
   @Selector()
@@ -36,7 +35,7 @@ export class ProfileState {
     if (!state.profiles.length) {
       currId = 1;
     } else {
-      currId = state.profiles.length + 1;
+      currId = state.profiles[state.profiles.length - 1].id + 1;
     }
     profile.id = currId;
 
@@ -55,6 +54,20 @@ export class ProfileState {
     const state = getState();
     patchState({
       profiles: state.profiles.filter(profile => profile.id !== id)
+    });
+  }
+
+  @Action(EditProfile) // `AddProfile` is a method imported from `profile.actions.ts`.
+  editProfile(
+    { getState, patchState }: StateContext<ProfileStateModel>,
+    { profile }
+  ) {
+    const state = getState();
+    const profileList = [...state.profiles];
+    
+    profileList.splice(profileList.findIndex(p => p.id === profile.id), 1, profile);
+    patchState({
+      profiles: profileList
     });
   }
 }
