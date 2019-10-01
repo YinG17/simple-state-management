@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ProfileStateService } from './state/profile.state.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
     name: ['', [Validators.required, Validators.minLength(5)]]
   });
 
+  subs = new Subscription();
 
   constructor(private fb: FormBuilder, public profileStateService: ProfileStateService) {
   }
@@ -30,18 +32,19 @@ export class AppComponent {
     }
     this.profileStateService.addProfile(this.form.value).subscribe(
       ([profiles, latest]) => {
-        console.log('profiles', profiles);
-        console.log('latest', latest);
+        // console.log('profiles', profiles);
+        // console.log('latest', latest);
         alert('profile added!');
         this.form.patchValue({ name: '' });
         this.submit = false;
-      });
+      }
+    );
   }
 
   deleteProfile(id: number) {
     const conf = confirm('Delete this profile?');
 
-    if ( !conf ) {
+    if (!conf) {
       return;
     }
 
@@ -49,8 +52,8 @@ export class AppComponent {
       /**
        * since the state handle the management of itself, we only need to wait for it's completion.
        */
-    alert('profile deleted!');
-  });
+      alert('profile deleted!');
+    });
   }
 
   /**

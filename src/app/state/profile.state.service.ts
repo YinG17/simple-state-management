@@ -40,9 +40,11 @@ export class ProfileStateService {
        * the return value we will receive the `profiles` state along with the latest data collection from `posts` state.
        *
        * @example
-       * - this.store.dispatch(new AddProfile(newProfile))
-       *      .pipe(withLatestFrom(postList))
-       *     .subscribe(([profileList, postList]));
+       * - this.profileStateService.addProfile(this.form.value).subscribe(
+       * ([profiles, posts]) => {
+       *   console.log('profiles', profiles);
+       *   console.log('posts', posts);
+       * });
        */
       withLatestFrom(this.profileList)
     );

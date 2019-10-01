@@ -10,6 +10,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from './state/profile.state';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { SearchProfileComponent } from './components/search-profile/search-profile.component';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -21,11 +22,15 @@ import { SearchProfileComponent } from './components/search-profile/search-profi
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgxsModule.forRoot([ProfileState], {
-      developmentMode: true
+    NgxsModule.forRoot([ProfileState], {   // initialize ProfileState
+      developmentMode: true                // must be set to true when in dev mode.
     })
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    console.log(environment.production);
+  }
+}
