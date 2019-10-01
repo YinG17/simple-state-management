@@ -14,7 +14,7 @@
     </div>
 
     <!-- profile list -->
-    <div style="margin-top: 1em;" *ngFor=" let profile of profileList | async ">
+    <div style="margin-top: 1em;" *ngFor=" let profile of profileStateService.profileList | async ">
 
       <h2> ID: {{ profile?.id }} <br>
         <span *ngIf=" idOnEdit !== profile.id ">
@@ -35,11 +35,12 @@
   <section class="raw-data">
     <b> Current Profile State </b> <br>
     <div style="margin-top: .5em; margin-bottom: 1em;">
-      {{ currentState | async | json }}
+      <b>LatestProfileID:</b> {{ (profileStateService.currentState | async)?.latestProfileID }} <br>
+      <b>SearchText:</b> {{ (profileStateService.currentState | async)?.searchText }}
     </div>
 
     <b >Current Profile List State</b>
-    <div style="margin-top: .5em;" *ngFor=" let profile of profileList | async">
+    <div style="margin-top: .5em;" *ngFor=" let profile of profileStateService.profileList | async">
       {{ profile | json }}
     </div>
   </section>

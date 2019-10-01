@@ -1,11 +1,11 @@
-<h1>Search term: {{ searchTerm }} </h1>
+<h1>Search term: {{ (profileStateService.currentState | async).searchText }} </h1>
 
-<form [formGroup]="form" (ngSubmit)="searchProfile()">
+<form [formGroup]="form" (ngSubmit)="search()">
   <input name="search" type="string" formControlName="search" />
   <button type="submit"> Search </button>
 </form>
 
-<div *ngFor=" let profile of profiles | async ">
+<div *ngFor=" let profile of profileStateService.profilesSearch | async ">
   <h2>
     ID: {{ profile.id }} <br>
     Name: {{ profile.name }}  

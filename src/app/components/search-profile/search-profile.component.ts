@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { ProfileState, ProfileStateModel } from 'src/app/state/profile.state';
-import { map } from 'rxjs/operators';
-import { SearchProfile } from 'src/app/state/profile.actions';
 import { Profile } from 'src/app/state/profile.model';
+import { ProfileStateService } from 'src/app/state/profile.state.service';
 
 @Component({
   selector: 'app-search-profile',
@@ -14,8 +10,6 @@ import { Profile } from 'src/app/state/profile.model';
 })
 export class SearchProfileComponent implements OnInit {
 
-  @Select(ProfileState.searchProfile)
-  profiles: Observable<Profile[]>;
 
   form = this.fb.group({
     search: ['', []]
@@ -24,15 +18,14 @@ export class SearchProfileComponent implements OnInit {
   searchedProfile: Profile[];
   searchTerm = '';
 
-  constructor(private fb: FormBuilder, private store: Store) { }
+  constructor(private fb: FormBuilder, public profileStateService: ProfileStateService) { }
 
   ngOnInit() {
   }
 
-  searchProfile() {
+  search() {
     const search = this.form.get('search').value;
-    this.searchTerm = search;
-    this.store.dispatch(new SearchProfile(search)).subscribe();
+    this.profileStateService.searchProfile(search).subscribe();
   }
 
 }

@@ -28,8 +28,8 @@ const defaultProfile: Profile = {
 @State<ProfileStateModel>({
   name: 'profiles',
   defaults: {
-    // profiles: []
-    profiles: [defaultProfile],
+    profiles: [],
+    // profiles: [defaultProfile],
     latestProfileID: 0,
     searchText: ''
   }
@@ -38,6 +38,11 @@ export class ProfileState {
   constructor() {
   }
 
+  /**
+   * `Current State Selector`
+   *
+   * @returns the `current state` of the `ProfileState`.
+   */
   @Selector()
   static getState(state: ProfileStateModel) {
     return state;
@@ -97,24 +102,25 @@ export class ProfileState {
      *
      * this is adding a new profile, which automatically increments the id to the highest profile id value from the list + 1.
      */
-    let currId = 0;
-    if (state.latestProfileID) {
-      currId = state.latestProfileID + 1;
+    let currentId = 0;
+    if (state.latestProfileID) {          // if latestProfileID is not falsy.
+      currentId = state.latestProfileID + 1;
     } else {
-      if (!state.profiles.length) {
-        currId = 1;
+      if (!state.profiles.length) {       // else check if list lenght is not falsy.
+        currentId = 1;                    // if falsy set `currentId` to 1,
       } else {
-        currId = state.profiles[state.profiles.length - 1].id + 1;
+        currentId = state.profiles.pop().id++;  // else set it to the id of the last profile from the list and incremented by 1.
       }
     }
-    profile.id = currId;
+    profile.id = currentId; // set profile id to `currentId`.
 
     /**
      * patching profile state with the current `profileState` and the new one added.
+     * also patch the `latestProfileID` with the value of `currentId` for future reference.
      */
     patchState({
       profiles: [...state.profiles, profile],
-      latestProfileID: currId
+      latestProfileID: currentId
     });
   }
 
@@ -128,7 +134,6 @@ export class ProfileState {
   ) {
     const state = getState();
     const profileList = [...state.profiles];
-
     profileList.splice(profileList.findIndex(p => p.id === profile.id), 1, profile);
     patchState({
       profiles: profileList
@@ -151,19 +156,22 @@ export class ProfileState {
 
   /**
    * `Delete Profile Action`
-   *
    */
   @Action(DeleteProfile)
   deleteProfile(
     { getState, patchState }: StateContext<ProfileStateModel>,
     { id }: DeleteProfile
   ) {
-    // console.log('ID to delete: ', id);
     const state = getState();
-
+    /**
+     * we create a new instance of the `profiles` or the profile list of the state since we cannot modify it directly.
+     */
     const profileList = [...state.profiles];
     profileList.splice(profileList.findIndex(p => p.id === id), 1);
 
+    /**
+     * then we patch it to the `profiles` property of the state to update it.
+     */
     patchState({
       profiles: profileList
     });

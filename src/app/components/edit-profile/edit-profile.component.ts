@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Profile } from 'src/app/state/profile.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Store } from '@ngxs/store';
-import { EditProfile } from 'src/app/state/profile.actions';
 import { Subject } from 'rxjs';
+import { ProfileStateService } from 'src/app/state/profile.state.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,7 +15,7 @@ export class EditProfileComponent implements OnInit {
   @Output() result = new Subject<boolean>();
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store) { }
+  constructor(private fb: FormBuilder, private profileStateService: ProfileStateService) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -26,10 +25,11 @@ export class EditProfileComponent implements OnInit {
   }
 
   editProfile() {
-    if (this.form.invalid) {
+    if ( this.form.invalid ) {
       return;
     }
-    this.store.dispatch(new EditProfile(this.form.value)).subscribe(() => {
+
+    this.profileStateService.editProfile(this.form.value).subscribe(() => {
       alert(`Profile with ID: ${this.profile.id} has been successfully editted!`);
       this.result.next(true);
     });
