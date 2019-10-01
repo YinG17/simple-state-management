@@ -5,7 +5,7 @@
 .container {
   display: flex;
 
-  .raw-data {
+  .raw-data, .profile-management, .search {
     padding: 3em;
   }
 }

@@ -1,4 +1,13 @@
+<h1>Search term: {{ searchTerm }} </h1>
+
 <form [formGroup]="form" (ngSubmit)="searchProfile()">
   <input name="search" type="string" formControlName="search" />
   <button type="submit"> Search </button>
 </form>
+
+<div *ngFor=" let profile of profiles | async ">
+  <h2>
+    ID: {{ profile.id }} <br>
+    Name: {{ profile.name }}  
+  </h2>
+</div>

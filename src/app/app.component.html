@@ -9,6 +9,7 @@
       <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
       <form [formGroup]="form" (ngSubmit)=" addProfile() ">
         <input name="name" formControlName="name" />
+        <button type="submit"> Add </button>
       </form>
     </div>
 
@@ -40,8 +41,7 @@
   </section>
 
 
-  <section>
-    <h2>Search</h2>
+  <section class="search">
     <app-search-profile></app-search-profile>
   </section>
 </div>

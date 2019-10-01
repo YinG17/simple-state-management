@@ -9,6 +9,7 @@ export class GetProfileList {
   static readonly type = '[Profile] List';
 }
 
+
 /**
  * `Actions with payload`
  *
@@ -27,8 +28,9 @@ export class EditProfile {
 
 
 export class SearchProfile {
-  static readonly type = '[Profile] Delete';
-  constructor(public search: string) { }
+  static readonly type = '[Profile] Search';
+
+  constructor(public search: string) {}
 }
 
 export class DeleteProfile {

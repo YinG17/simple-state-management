@@ -4,6 +4,7 @@ import { AddProfile, DeleteProfile, EditProfile, SearchProfile } from './profile
 
 export class ProfileStateModel {
   profiles: Profile[];
+  searchText: string;
 }
 
 /**
@@ -28,8 +29,9 @@ const defaultProfile: Profile = {
     /**
      * we can define a `default` state value. or we can leave it as an empty array.
      */
-    profiles: [defaultProfile]
     // profiles: []
+    profiles: [defaultProfile],
+    searchText: ''
   }
 })
 export class ProfileState {
@@ -44,8 +46,17 @@ export class ProfileState {
     return state.profiles;
   }
 
+  /**
+   * `Search Profile Selector`
+   * 
+   * @returns a list of profile according from the current `state.searchText` value
+   */
   @Selector()
   static searchProfile(state: ProfileStateModel) {
+    if ( state.searchText ) {
+      return state.profiles.filter(p => (p.name.indexOf(state.searchText) !== -1) || p.id.toString() === state.searchText);
+    }
+    return [];
   }
 
   /**
@@ -112,6 +123,19 @@ export class ProfileState {
     });
   }
 
+
+  /**
+   * `Search Profile Action`
+   * 
+   * this will patch the `searchString` property of the `ProfileStateModel`.
+   */
+  @Action(SearchProfile)
+  searchProfile(
+    { patchState }: StateContext<ProfileStateModel>,
+    { search }: SearchProfile
+  ) {
+    patchState({ searchText: search });
+  }
 
   @Action(DeleteProfile)
   deleteProfile(
