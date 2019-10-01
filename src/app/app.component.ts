@@ -22,11 +22,12 @@ export class AppComponent {
   }
 
   addProfile() {
+    this.submit = true;
+
     if (this.form.invalid) {
       alert('invalid name!');
       return;
     }
-    this.submit = true;
     this.profileStateService.addProfile(this.form.value).subscribe(
       ([profiles, latest]) => {
         console.log('profiles', profiles);

@@ -5,10 +5,10 @@
     <b>Form valid: {{ form.valid }} </b>
 
     <div>
-      <small class="red" *ngIf=" reqErr && touched && !submit "> please input name </small>
-      <small class="red" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
+      <small class="error" *ngIf=" reqErr && touched && submit "> please input name </small>
+      <small class="error" *ngIf=" minErr "> Name must be atleast 5 characters and above</small> <br>
       <form [formGroup]="form" (ngSubmit)=" addProfile() ">
-        <input name="name" formControlName="name" />
+        <input name="name" formControlName="name" placeholder="Name" />
         <button type="submit"> Add </button>
       </form>
     </div>
