@@ -34,12 +34,14 @@
 
   <section class="raw-data">
     <b> Current Profile State </b> <br>
-    <div style="margin-top: .5em; margin-bottom: 1em;">
-      <b>LatestProfileID:</b> {{ (profileStateService.currentState | async)?.latestProfileID }} <br>
-      <b>SearchText:</b> {{ (profileStateService.currentState | async)?.searchText }}
+    <div style="margin-top: .5em; margin-left: 1em; margin-bottom: 1em;">
+      <p>
+        LatestProfileID: {{ (profileStateService.currentState | async)?.latestProfileID }} <br>
+        SearchText: {{ (profileStateService.currentState | async)?.searchText }}
+      </p>
     </div>
 
-    <b >Current Profile List State</b>
+    <b>Current Profile List State</b>
     <div style="margin-top: .5em;" *ngFor=" let profile of profileStateService.profileList | async">
       {{ profile | json }}
     </div>
